@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "Cart.apps.CartConfig",
     "User.apps.UserConfig",
     "Payment.apps.PaymentConfig",
+    "Shipment.apps.ShipmentConfig",
     "rest_framework",
     "rest_framework_simplejwt",
     "django_filters",
@@ -87,7 +88,7 @@ WSGI_APPLICATION = "ECommerce_DRF.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "django_ecommerce",
+        "NAME": "drf_ecommerce_project",
         "USER": "root",
         "PASSWORD": "1234",
         "HOST": "localhost",

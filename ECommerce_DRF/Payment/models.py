@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from enumfields import EnumField, Enum
-from Cart.models import Cart
 
 # Create your models here.
 
@@ -14,7 +13,9 @@ class PaymentType(Enum):
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    payment_type = EnumField(PaymentType, default=PaymentType.CREDIT_CARD)
+    payment_type = EnumField(
+        PaymentType, max_length=11, default=PaymentType.CREDIT_CARD
+    )
     card_number = models.CharField(max_length=16, blank=True)
     expiration_month = models.CharField(max_length=2, blank=True)
     expiration_year = models.CharField(max_length=4, blank=True)
@@ -44,16 +45,3 @@ class Payment(models.Model):
             return f"{self.iban}, '{self.user.username}'"
         else:
             return f"**** **** **** {self.card_number[-4:]}, {self.expiration_month}/{self.expiration_year}, '{self.user.username}'"
-
-
-class Shipment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    address = models.CharField(max_length=200)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.address}, {self.city}, {self.state}, {self.country}, {self.zip_code}"

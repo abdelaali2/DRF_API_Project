@@ -7,7 +7,12 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 
-class CartList(generics.ListAPIView):
-    queryset = Cart.objects.all()
+class CartListCreate(generics.ListCreateAPIView):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
